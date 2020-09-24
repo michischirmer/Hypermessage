@@ -4,8 +4,20 @@
 	background-color: gray;
 }
 
-#chat-box {
-	height: 400px;
-	margin: 0em;
-	overflow-y: auto;
+#message-box{
+	overflow: auto;
+	max-height: 300px;
+	background-color: goldenrod;
+}
+
+@media only screen and (max-width: 600px){
+	#chat-box{
+		width: 95vw;
+	}
+}
+
+@media only screen and (min-width: 600px){
+	#chat-box{
+		width: 80vw;
+	}
 }
