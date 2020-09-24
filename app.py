@@ -8,6 +8,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
+from datetime import datetime
 
 
 # Configure application
@@ -37,30 +38,55 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
 
+# state of the index page
+state = 0 # 0 for nothing, 1 for recipient not found, 2 for message sent
 
-@login_required
 @app.route("/")
-def index():
-    user_id = session['user_id']
-    return render_template("index.html")
-
-
 @login_required
+def index():
+    # user_id = session['user_id']
+    global state
+    s = state
+    state = 0
+    return render_template("index.html", state=s)
+
+
 @app.route("/settings")
+@login_required
 def settings():
     return render_template("settings.html")
 
 
-@login_required
 @app.route("/inbox")
+@login_required
 def inbox():
     return render_template("inbox.html")
 
 
+@app.route("/send", methods=["GET", "POST"])
 @login_required
-@app.route("/send")
 def send():
-    return render_template("send.html")
+    if request.method == "GET":
+        return render_template("send.html")
+    else:
+        global state
+
+        message = request.form.get("message")
+        subject = request.form.get("subject")
+        recipient = request.form.get("recipient")
+        sender_id = session['user_id']
+
+        # get the id from the recipient (if one exists)
+        result = db.execute("SELECT id FROM users WHERE username=:name", name=recipient)
+        if not result:
+            state = 1 # user not found
+            return redirect("/")
+        
+        recipient_id = result[0]['id']
+        state = 2
+
+        db.execute("INSERT INTO [mails] ([message], [subject], [recipient], [sender], [date]) VALUES (:message, :subject, :recipient, :sender, :date);", message=message, subject=subject, recipient=recipient_id, sender=sender_id, date=datetime.now())
+        return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

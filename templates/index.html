@@ -5,5 +5,12 @@
 {% endblock %}
 
 {% block main %}
+    {% if state == 1 %}
+    <div class="alert alert-danger">Recipient not found.</div>
+    {% endif %}
+    {% if state == 2 %}
+    <div class="alert alert-success">Mail sent.</div>
+    {% endif %}
+
     <p>You will see some features and options here</p>
 {% endblock %}

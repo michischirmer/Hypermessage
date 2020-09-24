@@ -5,4 +5,43 @@
 
 {% block main %}
     <p>Put some input form for a new E-Mail here</p>
+
+    <form action="/send" method="post">
+        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from" style="margin-bottom: 15px;"><br>
+        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px;"><br>
+        <textarea name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
+        <input type="submit" value="Send" id="send-button" class="btn btn-primary" disabled>
+    </form>
+
+    <style>
+        #message{
+            min-width: 50%;
+            height: 40%;
+            min-height:40%;
+        }
+    </style>
+
+    <script>
+        let recipient = document.querySelector('#recipient');
+        let subject = document.querySelector('#subject');
+        let message = document.querySelector('#message');
+
+        recipient.onkeyup = f;
+        subject.onkeyup = f;
+        message.onkeyup = f;
+
+        function f(){
+            let recipient = document.querySelector('#recipient');
+            let subject = document.querySelector('#subject');
+            let message = document.querySelector('#message');
+
+            if (recipient.value == "" || subject.value == "" || message.value == ""){
+                document.querySelector('#send-button').disabled = true;
+            }else{
+                document.querySelector('#send-button').disabled = false;
+            }
+        }
+        
+    </script>
+    
 {% endblock %}
