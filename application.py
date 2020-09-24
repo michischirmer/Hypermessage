@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, emit
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
+from cs50 import SQL
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static/', static_folder='static')
 app.config['SECRET_KEY'] = 'ines'

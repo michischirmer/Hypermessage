@@ -1,79 +1,83 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<title>Papo Reto</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="C. Magno Nascimento">
-<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/style.css') }}">
-<link rel="icon" type="image/png" href="{{ url_for('static', filename='./images/icon.png') }}">
-</head>
-<body>
-<script type="text/javascript" charset="utf-8">
-const socket = io();
+<html lang="en">
+	<head>
+		<title>Chat50</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
-socket.on('connect', () => {
-	socket.emit('connected', {'nickname':document.getElementById('nickname-input').value}, (data) => {
-	});
-});
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/style.css') }}">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
-socket.on('server_message', (data) => {
-	let e = document.createElement('p');
-	let sp = document.createElement('span');
-	sp.innerHTML = data.nickname;
-	e.appendChild(sp);
-	e.innerHTML = e.innerHTML+'>> '+data.message;
+	</head>
+	<body>
+	<script>
+		const socket = io();
 
-	if(document.getElementById('message-box').children.length>20){
-		document.getElementById('message-box').removeChild(document.getElementById('message-box').children[0]);
-	}
+		socket.on('connect', () => {
+			socket.emit('connected', {'nickname':document.getElementById('nickname-input').value}, (data) => {
+			});
+		});
 
-	document.getElementById('message-box').appendChild(e);
+		socket.on('server_message', (data) => {
+			let e = document.createElement('div');
+			let content = document.createElement('span');
+			content.classList.add = "message";
+			content.innerHTML = data.nickname + ": " + data.message;
+			e.appendChild(content);
+			e.className = "alert alert-secondary";
 
-	
-	document.getElementById('message-box').scroll(0, document.getElementById('message-box').scrollHeight);
-});
 
-function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+			
 
-function sendMessage(){
-	socket.emit('client_message', {'nickname': htmlEntities(document.getElementById('nickname-input').value), 'message':  htmlEntities(document.getElementById('message-input').value)});
-	document.getElementById('message-input').value = '';
-}
+			if(document.getElementById('message-box').children.length>20){
+				document.getElementById('message-box').removeChild(document.getElementById('message-box').children[0]);
+			}
 
-function isPressingEnter(e){
-	let k;
-	if(window.event){
-		k = e.keyCode;
-		if(k===13){
-			sendMessage();
+			document.getElementById('message-box').appendChild(e);
+			document.getElementById('message-box').scroll(0, document.getElementById('message-box').scrollHeight);
+		});
+
+		function htmlEntities(str) {
+			return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 		}
-	}else if(e.which){
-		k = e.which;
-		if(k===13){
-			sendMessage();
+
+		function sendMessage(){
+			socket.emit('client_message', {'nickname': htmlEntities(document.getElementById('nickname-input').value), 'message':  htmlEntities(document.getElementById('message-input').value)});
+			document.getElementById('message-input').value = '';
 		}
-	}
-}
 
-</script>
-<h1 id="title">Papo Reto</h1>
-<section id="chat-box">
-	<section id="message-box">
-	</section>
-	
-	<section id="input-box">
-		<input type="text" autofocus onkeypress="return isPressingEnter(event)" required placeholder="Digite sua mensagem aqui" id="message-input">
-		<button type="button" id="send-button" onclick="sendMessage()" >>></button> 
-	</section>
-</section>
+		function isPressingEnter(e){
+			let k;
+			if(window.event){
+				k = e.keyCode;
+				if(k===13){
+					sendMessage();
+				}
+			}else if(e.which){
+				k = e.which;
+				if(k===13){
+					sendMessage();
+				}
+			}
+		}
+	</script>
 
-<section id="nickname-box">
-	<label id="nickname-label" for="nickname-input">Nickname: </label>
-	<input type="text" id="nickname-input" autocomplete="off" value="Guest">
-</section>
+	<h1>Chat50</h1>
+	<section id="chat-box">
+		<div class="container" id="message-box">
+			<!-- Content here -->
+		</div>
+		
+		<section id="input-box">>
+			<input type="text" autofocus onkeypress="return isPressingEnter(event)" required placeholder="" id="message-input">
+			<button type="button" class="btn btn-primary" id="send-button" onclick="sendMessage()" >Send</button> 
+		</section>
+	</section>
+
+	<section id="nickname-box">
+		<label id="nickname-label" for="nickname-input">Username: </label>
+		<input type="text" id="nickname-input" autocomplete="off" value="Guestuser">
+	</section>
 
 </body>
 </html>
