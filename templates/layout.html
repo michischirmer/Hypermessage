@@ -11,6 +11,7 @@
         <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
+
         <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
         <link href="/static/favicon.ico" rel="icon">
 
@@ -26,7 +27,7 @@
 
     <body>
 
-        <nav class="navbar navbar-expand-md navbar-light bg-light border">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <a class="navbar-brand" href="/"><span class="blue">M</span><span class="red">A</span><span class="yellow">I</span><span class="green">L</span> <span class="red">50</span></a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -58,13 +59,30 @@
             </header>
         {% endif %}
 
-        <main class="container p-5">
+        <main class="container p-5" id="main">
             {% block main %}{% endblock %}
         </main>
 
-        <footer class="small text-center text-muted">
+        <footer class="small text-center text-light" id="footer">
             Page created by Michael Schirmer &copy; 2020
         </footer>
+
+        <style>
+            body{
+                background-color: rgb(62, 90, 124);
+            }
+
+            #main {
+                padding-bottom: 2.5rem;    /* Footer height */
+            }
+
+            #footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 2.5rem;            /* Footer height */
+            }
+        </style>
 
     </body>
 

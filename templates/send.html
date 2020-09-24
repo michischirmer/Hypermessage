@@ -4,20 +4,30 @@
 {% endblock %}
 
 {% block main %}
-    <p>Put some input form for a new E-Mail here</p>
+    <p style="color: white;">Send a text message to another user.</p>
 
-    <form action="/send" method="post">
-        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from" style="margin-bottom: 15px;"><br>
-        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px;"><br>
-        <textarea name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
-        <input type="submit" value="Send" id="send-button" class="btn btn-primary" disabled>
+    <form action="/send" method="post" style="margin-bottom: 15px; background-color: rgb(62, 90, 124);">
+        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from form-control-lg" style="margin-bottom: 15px;" autocomplete="off"><br>
+        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px;" autocomplete="off"><br>
+        <textarea rows="10" name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
+        <input type="submit" value="Send" id="send-button" class="btn btn-light" disabled>
     </form>
 
     <style>
         #message{
             min-width: 50%;
-            height: 40%;
-            min-height:40%;
+            height: 60%;
+            min-height:60%;
+            resize: none;
+        }
+        #recipient, #subject{
+            min-width: 40%;
+            max-width: 40%;
+            text-align: center;
+        }
+        input, #message{
+            background-color: white;
+            color: black;
         }
     </style>
 
