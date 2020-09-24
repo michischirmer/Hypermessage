@@ -1,0 +1,5 @@
+{% extends "quote.html" %}
+
+{% block result %}
+    <p class="lead">A share of {{ result['name'] }}({{ result['symbol'] }}) costs ${{ result['price'] }}.</p>
+{% endblock %}

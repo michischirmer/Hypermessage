@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    {% if found == False %}
+        <div class="alert alert-danger">
+          Quote was not found.
+        </div>
+    {% endif %}
+
+    <form action="/quote" method="post">
+        <input id="quote" type="text" name="symbol" class="form-control" placeholder="Search for Quote"><br><br>
+        <input id="button" type="submit" name="submit" value="Search" class="btn btn-primary" disabled>
+    </form>
+    <br>
+    {% block result %}
+    {% endblock %}
+
+    <script>
+        document.querySelector('#quote').onkeyup = function(){
+            var value = document.querySelector('#quote').value;
+            if (value != "")
+            {
+                document.querySelector('#button').disabled = false;
+            }
+            else
+            {
+                document.querySelector('#button').disabled = true;
+            }
+        };
+    </script>
+{% endblock %}

@@ -1,17 +1,38 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block title %}
-    Login
+    Log In
 {% endblock %}
 
 {% block main %}
-    <form>
-        <input type="text" class="form-control" name="username" id="username" placeholder="Username"><br>
-        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    {% if error %}
+        <div class="alert alert-danger">Wrong username and/or password</div>
+    {% endif %}
+
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input id="password" class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <button id="button" class="btn btn-primary" type="submit" disabled>Log In</button>
     </form>
-    <style>
-        #username{
-            margin-bottom: 15px;
+
+    <script>
+        var username = document.querySelector('#username');
+        var password = document.querySelector('#password');
+        var button = document.querySelector('#button');
+
+        username.onkeyup = f;
+        password.onkeyup = f;
+
+        function f(){
+            if (username.value == "" || password.value == ""){
+                document.querySelector('#button').disabled = true;
+            }else{
+                document.querySelector('#button').disabled = false;
+            }
         }
-    </style>
+    </script>
 {% endblock %}

@@ -1,81 +1,76 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
 
 {% block title %}
-	Chat50
-{% endblock %}
-
-{% block meta %}
-	<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<link src="css/style.css" rel="stylesheet">
+    Index
 {% endblock %}
 
 {% block main %}
-	<script>
-		const socket = io();
 
-		socket.on('connect', () => {
-			socket.emit('connected', {'nickname':document.getElementById('username-input').value}, (data) => {
-			});
-		});
+    {% if s == 1 %}
+        <div class="alert alert-success">Sold!</div>
+    {% endif %}
+    {% if s == 2 %}
+        <div class="alert alert-success">Bought!</div>
+    {% endif %}
+    {% if s == 3 %}
+        <div class="alert alert-success">Added cash!</div>
+    {% endif %}
 
-		socket.on('server_message', (data) => {
-			let e = document.createElement('div');
-			let content = document.createElement('p');
-			content.classList.add = "message";
-			e.classList.add = "message";
-			content.innerHTML = data.nickname + ": " + data.message;
-			e.appendChild(content);
-			e.className = "alert alert-secondary";
-			
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Shares</th>
+                <th scope="col">Price</th>
+                <th scope="col">Change</th>
+                <th scope="col">TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in stocks %}
+                <tr>
+                    <td>{{ row['symbol'] }}</td>
+                    <td>{{ row['name'] }}</td>
+                    <td>{{ row['shares'] }}</td>
+                    <td>{{ row['price'] }}</td>
 
-			if(document.getElementById('message-box').children.length>10){
-				document.getElementById('message-box').removeChild(document.getElementById('message-box').children[0]);
-			}
+                    {% if row['change'] < 0 %}
+                        <td style="color: red;">{{ row['change_str'] }} &#8681;</td>
+                    {% endif %}
+                    {% if row['change'] > 0 %}
+                        <td style="color: green;">+{{ row['change_str'] }} &#8679;</td>
+                    {% endif %}
+                    {% if row['change'] == 0 %}
+                        <td style="color: black;">{{ row['change_str'] }}</td>
+                    {% endif %}
 
-			document.getElementById('message-box').appendChild(e);
-			document.getElementById('message-box').scroll(0, document.getElementById('message-box').scrollHeight);
-		});
+                    <td>{{ row['sum'] }}</td>
+                </tr>
+            {% endfor %}
 
-		function htmlEntities(str) {
-			return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-		}
+            <tr>
+                <td>CASH</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ cash }}</td>
+            </tr>
 
-		function sendMessage(){
-			socket.emit('client_message', {'nickname': htmlEntities(document.getElementById('username-input').value), 'message':  htmlEntities(document.getElementById('message-input').value)});
-			document.getElementById('message-input').value = '';
-		}
 
-		function isPressingEnter(e){
-			let k;
-			if(window.event){
-				k = e.keyCode;
-				if(k===13){
-					sendMessage();
-				}
-			}else if(e.which){
-				k = e.which;
-				if(k===13){
-					sendMessage();
-				}
-			}
-		}
-	</script>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>{{ total }}</b></td>
+            </tr>
+        </tbody>
+    </table>
 
-	<section id="chat-box">
-		<div class="container" id="message-box">
-			<!-- Content here -->
-		</div>
-		
-		<section id="input-box">
-			<input type="text" class="form-control" autofocus onkeypress="return isPressingEnter(event)" required placeholder="" id="message-input" style="margin-bottom: 15px;">
-			<button type="button" class="btn btn-primary" id="send-button" onclick="sendMessage()" style="margin-bottom: 15px;">Send</button> 
-		</section>
-	</section>
 
-	<section id="nickname-box">
-		<!-- will be replaced with actual loggin in username -->
-		<input type="text" class="form-control" id="username-input" placeholder="Username" autocomplete="off" value="Guestuser">
-	</section>
+
 
 {% endblock %}

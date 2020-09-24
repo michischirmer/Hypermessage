@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Change Password
+{% endblock %}
+
+{% block main %}
+
+    {% if state == 1 %}
+        <div class="alert alert-danger">Wrong Password</div>
+    {% endif %}
+    {% if state == 2 %}
+        <div class="alert alert-success">Password changed</div>
+    {% endif %}
+
+
+    <p>Change your password:</p>
+    <form action="/profile" method="post">
+        <input id="pw" type="password" name="password" placeholder="Input old Password" class="form-control" style="margin-bottom:10px;"><br>
+        <input id="n-pw" type="password" name="new_password" placeholder="Choose new Password" class="form-control" style="margin-bottom:10px;"><br>
+        <input id="r-n-pw" type="password" name="confirmation" placeholder="Repeat new Password" class="form-control" style="margin-bottom:10px;"><br>
+        <p id="error1" style="color:red; font-size: small;"></p>
+        <p id="error2" style="color:red; font-size: small;"></p>
+        <p id="req" style="font-size: small;">
+            Password must contain <br>
+                <span style="font-size: x-small;">
+                <span id="length">&#8226; at least 6 characters.</span> <br>
+                <span id="lower">&#8226; at least 1 one lowercase letter.</span> <br>
+                <psan id="upper">&#8226; at least 1 uppercase letter.</psan> <br>
+                <span id="digit">&#8226; at least 1 digit.</span> </span>
+        </p>
+        <input id="button" type="submit" value="Change password" class="btn btn-primary" disabled>
+    </form>
+
+    <script>
+        document.querySelector('#r-n-pw').onkeyup = f;
+        document.querySelector('#n-pw').onkeyup = f;
+
+        function f()
+        {
+            var password = document.querySelector('#pw').value;
+            var n_password = document.querySelector('#n-pw').value;
+            var r_password = document.querySelector('#r-n-pw').value;
+
+            if (password != "" && n_password != "" && r_password != "")
+            {
+                document.querySelector('#button').disabled = false;
+            }
+            else
+            {
+                document.querySelector('#button').disabled = true;
+            }
+
+            var error = document.querySelector("#error1");
+            if (n_password != r_password && n_password != "" && r_password != "")
+            {
+                error.innerHTML = "Passwords must be the same";
+                document.querySelector('#r-n-pw').classList.add("bg-danger");
+            }
+            else
+            {
+                error.innerHTML = "";
+                document.querySelector('#r-n-pw').classList.remove("bg-danger");
+            }
+
+            // check for requirements
+            let requirements = check_for_requirements(n_password);
+            if (requirements[0])
+            {
+                button.disabled = false;
+                document.querySelector('#n-pw').classList.remove("bg-danger");
+                document.querySelector("#error2").innerHTML = "";
+
+                document.querySelector('#length').style.color = "black";
+                document.querySelector('#digit').style.color = "black";
+                document.querySelector('#lower').style.color = "black";
+                document.querySelector('#upper').style.color = "black";
+            }
+            else
+            {
+                document.querySelector('#n-pw').classList.add("bg-danger");
+                document.querySelector("#error2").innerHTML = "Password does not meet the requirements";
+                button.disabled = true;
+
+                if (!requirements[1]){
+                    document.querySelector("#lower").style.color = "red";
+                }else{
+                    document.querySelector("#lower").style.color = "black";
+                }
+
+                if (!requirements[2]){
+                    document.querySelector("#upper").style.color = "red";
+                }else{
+                    document.querySelector("#upper").style.color = "black";
+                }
+
+                if (!requirements[3]){
+                    document.querySelector("#digit").style.color = "red";
+                }else{
+                    document.querySelector("#digit").style.color = "black";
+                }
+
+                if (!requirements[4]){
+                    document.querySelector("#length").style.color = "red";
+                }else{
+                    document.querySelector("#length").style.color = "black";
+                }
+            }
+        }
+
+        function check_for_requirements(str)
+        {
+            return [(lower(str) && upper(str) && digit(str) && length(str)), lower(str), upper(str), digit(str), length(str)];
+        }
+
+        function lower(str)
+        {
+            for (i = 0; i < str.length; i++)
+            {
+                if (str[i] <= 'z' && str[i] >= 'a' && str[i] != '\n')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function upper(str)
+        {
+            for (i = 0; i < str.length; i++)
+            {
+                if (str[i] <= 'Z' && str[i] >= 'A')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function length(str)
+        {
+            if (str.length >= 6)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        function digit(str)
+        {
+            for (i = 0; i < str.length; i++)
+            {
+                if (parseInt(str[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+{% endblock %}
