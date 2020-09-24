@@ -1,6 +1,3 @@
-#! /usr/bin/python
-# -*- encoding: utf-8 -*-
-
 from flask import Flask, render_template, jsonify
 from flask_socketio import SocketIO, emit
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -19,6 +16,10 @@ socketio = SocketIO(app)
 def index():
 	return render_template('./index.html')
 
+@app.route("/login")
+def login():
+	return render_template("./login.html")
+
 @socketio.on('connected')
 def conn(msg):
 	return {'data':'Ok'}
@@ -27,6 +28,8 @@ def conn(msg):
 def receive_message(data):
 	emit('server_message', data, broadcast=True)
 
+
+# run the server application
 if __name__ == '__main__':
 	socketio.run(app, debug=True)
 
