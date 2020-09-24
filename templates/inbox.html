@@ -5,4 +5,18 @@
 
 {% block main %}
     <p>Put some new Mails here</p>
+
+
+    <div class="list-group">
+        {% for mail in mails %}
+            {% if mail[1] == 1 %}
+                <button type="button" class="list-group-item list-group-item-action">{{ mail[0] }}</button>
+            {% endif %}
+            {% if mail[1] == 0 %}
+                <button type="button" class="list-group-item list-group-item-action active">{{ mail[0] }}</button>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+
 {% endblock %}

@@ -60,7 +60,18 @@ def settings():
 @app.route("/inbox")
 @login_required
 def inbox():
-    return render_template("inbox.html")
+    emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
+    old = []
+    ls = []
+    for row in emails:
+        sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
+        string = "From " + sender[0]['username'] + " - " + row['subject'] + " - " + str(row['date'])
+        if row['read'] == 0:     
+            ls.append([string, 0])
+        else:
+            ls.append([string, 1])
+
+    return render_template("inbox.html", mails=ls)
 
 
 @app.route("/send", methods=["GET", "POST"])
@@ -85,7 +96,7 @@ def send():
         recipient_id = result[0]['id']
         state = 2
 
-        db.execute("INSERT INTO [mails] ([message], [subject], [recipient], [sender], [date]) VALUES (:message, :subject, :recipient, :sender, :date);", message=message, subject=subject, recipient=recipient_id, sender=sender_id, date=datetime.now())
+        db.execute("INSERT INTO [mails] ([message], [subject], [recipient], [sender], [date], [read]) VALUES (:message, :subject, :recipient, :sender, :date, 0);", message=message, subject=subject, recipient=recipient_id, sender=sender_id, date=datetime.now())
         return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
