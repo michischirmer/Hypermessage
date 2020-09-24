@@ -1,76 +1,9 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Index
+    Home
 {% endblock %}
 
 {% block main %}
-
-    {% if s == 1 %}
-        <div class="alert alert-success">Sold!</div>
-    {% endif %}
-    {% if s == 2 %}
-        <div class="alert alert-success">Bought!</div>
-    {% endif %}
-    {% if s == 3 %}
-        <div class="alert alert-success">Added cash!</div>
-    {% endif %}
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Symbol</th>
-                <th scope="col">Name</th>
-                <th scope="col">Shares</th>
-                <th scope="col">Price</th>
-                <th scope="col">Change</th>
-                <th scope="col">TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in stocks %}
-                <tr>
-                    <td>{{ row['symbol'] }}</td>
-                    <td>{{ row['name'] }}</td>
-                    <td>{{ row['shares'] }}</td>
-                    <td>{{ row['price'] }}</td>
-
-                    {% if row['change'] < 0 %}
-                        <td style="color: red;">{{ row['change_str'] }} &#8681;</td>
-                    {% endif %}
-                    {% if row['change'] > 0 %}
-                        <td style="color: green;">+{{ row['change_str'] }} &#8679;</td>
-                    {% endif %}
-                    {% if row['change'] == 0 %}
-                        <td style="color: black;">{{ row['change_str'] }}</td>
-                    {% endif %}
-
-                    <td>{{ row['sum'] }}</td>
-                </tr>
-            {% endfor %}
-
-            <tr>
-                <td>CASH</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ cash }}</td>
-            </tr>
-
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><b>{{ total }}</b></td>
-            </tr>
-        </tbody>
-    </table>
-
-
-
-
+    <p>You will see some features and options here</p>
 {% endblock %}
