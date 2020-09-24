@@ -6,7 +6,12 @@
 
 {% block main %}
     <form>
-        <input type="text" name="username" id="username" placeholder="Username">
-        <input type="password" name="password" id="password" placeholder="Password">
+        <input type="text" class="form-control" name="username" id="username" placeholder="Username"><br>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
     </form>
+    <style>
+        #username{
+            margin-bottom: 15px;
+        }
+    </style>
 {% endblock %}

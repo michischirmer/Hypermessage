@@ -1,35 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>Chat50</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+{% extends 'layout.html' %}
 
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/style.css') }}">
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+{% block title %}
+	Chat50
+{% endblock %}
 
-	</head>
-	<body>
+{% block meta %}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<link src="css/style.css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
 	<script>
 		const socket = io();
 
 		socket.on('connect', () => {
-			socket.emit('connected', {'nickname':document.getElementById('nickname-input').value}, (data) => {
+			socket.emit('connected', {'nickname':document.getElementById('username-input').value}, (data) => {
 			});
 		});
 
 		socket.on('server_message', (data) => {
 			let e = document.createElement('div');
-			let content = document.createElement('span');
+			let content = document.createElement('p');
 			content.classList.add = "message";
+			e.classList.add = "message";
 			content.innerHTML = data.nickname + ": " + data.message;
 			e.appendChild(content);
 			e.className = "alert alert-secondary";
-
-
 			
 
-			if(document.getElementById('message-box').children.length>20){
+			if(document.getElementById('message-box').children.length>10){
 				document.getElementById('message-box').removeChild(document.getElementById('message-box').children[0]);
 			}
 
@@ -42,7 +42,7 @@
 		}
 
 		function sendMessage(){
-			socket.emit('client_message', {'nickname': htmlEntities(document.getElementById('nickname-input').value), 'message':  htmlEntities(document.getElementById('message-input').value)});
+			socket.emit('client_message', {'nickname': htmlEntities(document.getElementById('username-input').value), 'message':  htmlEntities(document.getElementById('message-input').value)});
 			document.getElementById('message-input').value = '';
 		}
 
@@ -62,22 +62,20 @@
 		}
 	</script>
 
-	<h1>Chat50</h1>
 	<section id="chat-box">
 		<div class="container" id="message-box">
 			<!-- Content here -->
 		</div>
 		
-		<section id="input-box">>
-			<input type="text" autofocus onkeypress="return isPressingEnter(event)" required placeholder="" id="message-input">
+		<section id="input-box">
+			<input type="text" class="form-control" autofocus onkeypress="return isPressingEnter(event)" required placeholder="" id="message-input">
 			<button type="button" class="btn btn-primary" id="send-button" onclick="sendMessage()" >Send</button> 
 		</section>
 	</section>
 
 	<section id="nickname-box">
-		<label id="nickname-label" for="nickname-input">Username: </label>
-		<input type="text" id="nickname-input" autocomplete="off" value="Guestuser">
+		<!-- will be replaced with actual loggin in username -->
+		<input type="text" class="form-control" id="username-input" placeholder="Username" autocomplete="off" value="Guestuser">
 	</section>
 
-</body>
-</html>
+{% endblock %}

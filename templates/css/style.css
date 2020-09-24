@@ -1,0 +1,11 @@
+.message{
+	font-size: small;
+	color: white;
+	background-color: gray;
+}
+
+#chat-box {
+	height: 400px;
+	margin: 0em;
+	overflow-y: auto;
+}
