@@ -15,6 +15,14 @@
 {% endblock %}
 
 {% block main %}
+    {% if changed_name %}
+        <div class="alert alert-success">Username was changed to {{ username }}.</div>
+    {% endif %}
+    {% if delete_all %}
+        <div class="alert alert-success">All messages were deleted.</div>
+    {% endif %}
+
+
     <div class="card-deck" id="list" style="margin: 0 0 0 0;">
         <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
             <div class="card-body">
@@ -34,7 +42,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">Continue if you want to delete all messages you have received so far.</h6>
                 <form action="/settings" method="post" style="float: left; margin-top: 10px;">
                     <div class="form-check" style="margin-bottom: 15px;">
-                        <input class="form-check-input" type="checkbox" value="delete" id="delete">
+                        <input class="form-check-input" type="checkbox" name="check" value="delete" id="delete">
                         <label class="form-check-label" for="defaultCheck1">
                             Are you sure you want to delete all messages?
                         </label>

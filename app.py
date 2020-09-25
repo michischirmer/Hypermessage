@@ -52,6 +52,7 @@ def index():
     return render_template("index.html", state=s)
 
 changed_name = False
+delete_all = False
 
 @app.route("/settings", methods=['GET', 'POST'])
 @login_required
@@ -60,7 +61,11 @@ def settings():
         global changed_name
         name = changed_name
         changed_name = False
-        return render_template("settings.html", changed_name=changed_name)
+
+        global delete_all 
+        delete = delete_all
+        delete_all = False
+        return render_template("settings.html", changed_name=changed_name, delete_all=delete_all)
     else:
         # user wants to change his name
         username = request.form.get('username')
@@ -68,8 +73,13 @@ def settings():
             db.execute("UPDATE users SET username=:username WHERE id=:id", id=session['user_id'], username=username)
             changed_name = True
         
+        # user wants to delete all mails received by him
+        delete = request.form.get('check')
+        if delete:
+            delete_all = True
+            db.execute("DELETE FROM mails WHERE recipient=:recipient", recipient=session['user_id'])
 
-        return render_template("settings.html", changed_name=changed_name)
+        return render_template("settings.html", changed_name=changed_name, username=username, delete_all=delete_all)
 
 
 @app.route("/inbox", methods=['GET', 'POST'])
