@@ -71,16 +71,23 @@ def inbox():
     ls = []
     for row in emails:
         sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
-        string = "From " + sender[0]['username'] + " - " + row['subject'] + " - " + str(row['date'])
+        username = sender[0]['username']
+        mail = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
+        subject = row['subject']
+        date = str(row['date'])
+        message = row['message']
 
-        mail_date = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
-
-        if mail_date > login:     
-            ls.append([string, 0, row['id']])
+        if mail > login:     
+            ls.append([username, subject, date, message, 0])
         else:
-            ls.append([string, 1, row['id']])
+            ls.append([username, subject, date, message, 1])
 
-    return render_template("inbox.html", mails=ls)
+    new_mail = False
+    for row in ls:
+        if row[4] == 0:
+            new_mail = True
+
+    return render_template("inbox.html", mails=ls, new_mail=new_mail)
 	    
 
 @app.route("/send", methods=["GET", "POST"])

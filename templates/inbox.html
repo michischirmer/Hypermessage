@@ -5,25 +5,50 @@
 
 {% block meta %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+        .card{
+            display:inline-block;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
-    <p style="color: white;">New messages since last login:</p>
+    {% if new_mail %}
+        <h3 style="color: white;">New messages since last login:</h3>
+        <div class="list-group" id="list">
+            <form action="/inbox" method="post">
+            {% for mail in mails %}
+                {% if mail[4] == 0 %}
+                    <div class="card bg-info" style="width: 18rem; text-align: center;">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">From {{ mail[0] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-black">{{ mail[1] }}</h6>
+                            <p class="card-text text-white">{{ mail[3] }}</p>
+                            <h7 class="card-subtitle mb-2 text-black">{{ mail[2] }}</h6>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </form>
+        </div>
+    {% endif %}
 
-
+    <h3 style="color: white; margin-top: 15px;">Old messages:</h3>
     <div class="list-group" id="list">
         <form action="/inbox" method="post">
         {% for mail in mails %}
-            {% if mail[1] == 1 %}
-                <button id={{mail[2]}} type="button" class="list-group-item list-group-item-action">{{ mail[0] }}</button>
+            {% if mail[4] == 1 %}
+                <div class="card" style="width: 18rem; text-align: center; margin-bottom: 15px">
+                    <div class="card-body">
+                        <h5 class="card-title">From {{ mail[0] }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ mail[1] }}</h6>
+                        <p class="card-text">{{ mail[3] }}</p>
+                        <h7 class="card-subtitle mb-2 text-muted">{{ mail[2] }}</h6>
+                    </div>
+                </div>
             {% endif %}
-            {% if mail[1] == 0 %}
-                <button id={{mail[2]}} type="button" class="list-group-item list-group-item-action active">{{ mail[0] }}</button>
-            {% endif %}
-
         {% endfor %}
         </form>
-        
     </div>
 
     <script>
@@ -35,6 +60,10 @@
             visited.name = "visited";
             visited.type = "hidden";
             visited.value = parseInt(this.id);
+            var myWindow = window.open("", "Message", "height=200,width=400,status=yes,toolbar=no,menubar=no,location=no");
+            myWindow.document.write(this.getAttribute('data-message'));
+            console.log(this.getAttribute('data-message'));
+            myWindow.document.title = "Message";
         }
 
         buttons = document.querySelectorAll('button');
