@@ -5,11 +5,17 @@
 
 {% block meta %}
     <style>
-        .card{
-            min-width: 80%;
+        .card, .card-deck{
+            /*min-width: 80%;
+            max-width: 80%;*/
+            display: inline-block;
         }
+
         #btn-change{
             margin-left: 15px;
+        }
+        #list{
+            /*width: 400px;*/
         }
     </style>
 {% endblock %}
@@ -30,9 +36,9 @@
     
 
     
-    <div class="card-deck" id="list" style="margin: 0 0 0 0;">
+    <div class="card-deck" id="list" style="margin-right: 0px;">
         <!-- user can change his username -->
-        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+        <div class="card" style="width: 45rem; text-align: left; margin-top: 15px; margin-right: 0px;">
             <div class="card-body">
                 <h5 class="card-title">Change Username</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Allows you to change the name others can refer to you in a message.</h6>
@@ -45,7 +51,7 @@
         </div>
 
         <!-- user can change password here -->
-        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+        <div class="card" style="width: 45rem; text-align: left; margin-top: 15px; margin-right: 0px;">
             <div class="card-body">
                 <h5 class="card-title">Change Password</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Allows you to change your password.</h6>
@@ -59,7 +65,7 @@
         </div>
 
         <!-- user can delete all recieved messages -->
-        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+        <div class="card" style="width: 45rem; text-align: left; margin-top: 15px; margin-right: 0px;">
             <div class="card-body">
                 <h5 class="card-title">Delete All</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Continue if you want to delete all messages you have received so far.</h6>
