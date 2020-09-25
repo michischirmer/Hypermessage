@@ -58,36 +58,46 @@ def settings():
     return render_template("settings.html")
 
 
-@app.route("/inbox")
+@app.route("/inbox", methods=['GET', 'POST'])
 @login_required
 def inbox():
+    if request.method == 'GET':
+        emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
+        last = db.execute("SELECT last_login FROM users WHERE id=:id", id=session['user_id'])
+        last_login = last[0]['last_login']
 
-    emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
-    last = db.execute("SELECT last_login FROM users WHERE id=:id", id=session['user_id'])
-    last_login = last[0]['last_login']
+        login = datetime.strptime(last_login, "%Y-%m-%d %H:%M:%S")
 
-    login = datetime.strptime(last_login, "%Y-%m-%d %H:%M:%S")
+        ls = []
+        for row in emails:
+            sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
+            username = sender[0]['username']
+            mail = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
+            subject = row['subject']
+            date = str(row['date'])
+            message = row['message']
+            mail_id = row['id']
 
-    ls = []
-    for row in emails:
-        sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
-        username = sender[0]['username']
-        mail = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
-        subject = row['subject']
-        date = str(row['date'])
-        message = row['message']
+            if mail > login:     
+                ls.append([username, subject, date, message, 0, mail_id])
+            else:
+                ls.append([username, subject, date, message, 1, mail_id])
 
-        if mail > login:     
-            ls.append([username, subject, date, message, 0])
-        else:
-            ls.append([username, subject, date, message, 1])
+        new_mail = False
+        for row in ls:
+            if row[4] == 0:
+                new_mail = True
 
-    new_mail = False
-    for row in ls:
-        if row[4] == 0:
-            new_mail = True
+        return render_template("inbox.html", mails=ls, new_mail=new_mail)
 
-    return render_template("inbox.html", mails=ls, new_mail=new_mail)
+    else:
+        source = request.form.get('source')
+        read = request.form.get('read')
+        if source:
+            print("Source of deleting: " + source)
+        elif read:
+            print("Source of reading: " + read)
+        return redirect('/inbox')
 	    
 
 @app.route("/send", methods=["GET", "POST"])
