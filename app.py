@@ -67,16 +67,12 @@ states = {
 def settings():
     if request.method == 'GET':
         global states
-        name = states['changed_name']
-        delete = states['delete_all']
-        pwc = states['changed_pw']
-        wpw = states['wrong_pw']
 
         # reset the state
         for key in states:
             states[key] = False
 
-        return render_template("settings.html", changed_name=name, delete_all=delete, changed_pw=pwc, wrong_pw=wpw)
+        return render_template("settings.html", states=list(states.values()))
     else:
         # reset the state
         for key in states:
@@ -106,7 +102,7 @@ def settings():
                 # user input the wrong password
                 states['wrong_pw'] = True
 
-        return render_template("settings.html", changed_name=states['changed_name'], username=username, delete_all=states['delete_all'], changed_pw=states['changed_pw'], wrong_pw=states['wrong_pw'])
+        return render_template("settings.html", states=list(states.values()), username=username)
 
 
 @app.route("/inbox", methods=['GET', 'POST'])
