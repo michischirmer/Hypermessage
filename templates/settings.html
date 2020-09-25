@@ -22,8 +22,9 @@
         <div class="alert alert-success">All messages were deleted.</div>
     {% endif %}
 
-
+    
     <div class="card-deck" id="list" style="margin: 0 0 0 0;">
+        <!-- user can change his username -->
         <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
             <div class="card-body">
                 <h5 class="card-title">Change Username</h5>
@@ -31,11 +32,26 @@
                 <form action="/settings" method="post" style="float: left; margin-top: 10px;">
                     <input type="text" name="username" id="username" placeholder="New username" class="form-control" autocomplete="off">
                     <input type="text" name="confirmation" id="confirmation" placeholder="Repeat new username" class="form-control" autocomplete="off">
-                    <br><button name="source" id="btn-change" class="btn btn-success" style="margin-top: 15px;" disabled>Change</button>
+                    <br><button name="source" id="btn-change" class="btn btn-success" style="margin-top: 15px; margin-left: 0;" disabled>Change</button>
                 </form>
             </div>
         </div>
 
+        <!-- user can change password here -->
+        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+            <div class="card-body">
+                <h5 class="card-title">Change Password</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Allows you to change your password.</h6>
+                <form action="/settings" method="post" style="float: left; margin-top: 10px;">
+                    <input type="password" name="old_password" id="old_password" placeholder="Old password" class="form-control" autocomplete="off">
+                    <input type="password" name="password" id="password" placeholder="Choose new password" class="form-control" autocomplete="off">
+                    <input type="password" name="pw-confirmation" id="pw-confirmation" placeholder="Repeat new password" class="form-control" autocomplete="off">
+                    <br><button name="source" id="btn-password" class="btn btn-success" style="margin-top: 15px; margin-left: 0;" disabled>Change</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- user can delete all recieved messages -->
         <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
             <div class="card-body">
                 <h5 class="card-title">Delete All</h5>
@@ -51,15 +67,14 @@
                 </form>
             </div>
         </div>
-
     </div>
 
 
 
     <script>
+        // username change
         document.querySelector('#username').onkeyup = f;
         document.querySelector('#confirmation').onkeyup = f;
-
         function f(){
             let username = document.querySelector('#username').value;
             let confirmation = document.querySelector('#confirmation').value;
@@ -76,8 +91,8 @@
 
         }
 
+        // delete all mails
         document.querySelector('#delete').onclick = g;
-
         function g(){
             let check = document.querySelector('#delete');
             if (check.checked){
@@ -85,6 +100,31 @@
             }else{
                 document.querySelector('#btn-delete').disabled = true;
             }
+        }
+
+        // password change
+        document.querySelector('#password').onkeyup = h;
+        document.querySelector('#old_password').onkeyup = h;
+        document.querySelector('#pw-confirmation').onkeyup = h;
+        function h(){
+            let old_password = document.querySelector('#old_password').value;
+            let password = document.querySelector('#password').value;
+            let confirmation = document.querySelector('#pw-confirmation').value;
+            
+            if (password != "" && confirmation != "" && old_password != ""){
+                document.querySelector('#btn-password').disabled = false;
+            }else{
+                document.querySelector('#btn-password').disabled = true;
+            }
+
+            if (password != confirmation){
+                document.querySelector('#btn-password').disabled = true;
+                if (confirmation != ""){
+                    document.querySelector('#pw-confirmation').style = "background-color: #ff3333; color: white;";
+                }
+            }else{
+                document.querySelector('#pw-confirmation').style = "background-color: white; color: black;";
+            }  
         }
     </script>
 
