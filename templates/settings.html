@@ -3,6 +3,81 @@
     Settings
 {% endblock %}
 
+{% block meta %}
+    <style>
+        .card{
+            min-width: 80%;
+        }
+        #btn-change{
+            margin-left: 15px;
+        }
+    </style>
+{% endblock %}
+
 {% block main %}
-    <p>Put some Settings here</p>
+    <div class="card-deck" id="list" style="margin: 0 0 0 0;">
+        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+            <div class="card-body">
+                <h5 class="card-title">Change Username</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Allows you to change the name others can refer to you in a message.</h6>
+                <form action="/settings" method="post" style="float: left; margin-top: 10px;">
+                    <input type="text" name="username" id="username" placeholder="New username" class="form-control" autocomplete="off">
+                    <input type="text" name="confirmation" id="confirmation" placeholder="Repeat new username" class="form-control" autocomplete="off">
+                    <br><button name="source" id="btn-change" class="btn btn-success" style="margin-top: 15px;" disabled>Change</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem; text-align: left; margin-top: 15px; margin-right: 15px;">
+            <div class="card-body">
+                <h5 class="card-title">Delete All</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Continue if you want to delete all messages you have received so far.</h6>
+                <form action="/settings" method="post" style="float: left; margin-top: 10px;">
+                    <div class="form-check" style="margin-bottom: 15px;">
+                        <input class="form-check-input" type="checkbox" value="delete" id="delete">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Are you sure you want to delete all messages?
+                        </label>
+                    </div>
+                    <button name="source" id="btn-delete" class="btn btn-danger" disabled>Delete All</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script>
+        document.querySelector('#username').onkeyup = f;
+        document.querySelector('#confirmation').onkeyup = f;
+
+        function f(){
+            let username = document.querySelector('#username').value;
+            let confirmation = document.querySelector('#confirmation').value;
+            
+            if (username != "" && confirmation != ""){
+                document.querySelector('#btn-change').disabled = false;
+            }else{
+                document.querySelector('#btn-change').disabled = true;
+            }
+
+            if (username != confirmation){
+                document.querySelector('#btn-change').disabled = true;
+            }
+
+        }
+
+        document.querySelector('#delete').onclick = g;
+
+        function g(){
+            let check = document.querySelector('#delete');
+            if (check.checked){
+                document.querySelector('#btn-delete').disabled = false;
+            }else{
+                document.querySelector('#btn-delete').disabled = true;
+            }
+        }
+    </script>
+
 {% endblock %}

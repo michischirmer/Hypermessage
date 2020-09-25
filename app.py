@@ -51,11 +51,25 @@ def index():
     state = 0
     return render_template("index.html", state=s)
 
+changed_name = False
 
-@app.route("/settings")
+@app.route("/settings", methods=['GET', 'POST'])
 @login_required
 def settings():
-    return render_template("settings.html")
+    if request.method == 'GET':
+        global changed_name
+        name = changed_name
+        changed_name = False
+        return render_template("settings.html", changed_name=changed_name)
+    else:
+        # user wants to change his name
+        username = request.form.get('username')
+        if username:
+            db.execute("UPDATE users SET username=:username WHERE id=:id", id=session['user_id'], username=username)
+            changed_name = True
+        
+
+        return render_template("settings.html", changed_name=changed_name)
 
 
 @app.route("/inbox", methods=['GET', 'POST'])
@@ -126,7 +140,7 @@ def send():
         recipient_id = result[0]['id']
         state = 2
 
-        db.execute("INSERT INTO [mails] ([message], [subject], [recipient], [sender], [date], [read]) VALUES (:message, :subject, :recipient, :sender, :date, 0);", message=message, subject=subject, recipient=recipient_id, sender=sender_id, date=datetime.now())
+        db.execute("INSERT INTO [mails] ([message], [subject], [recipient], [sender], [date], [read]) VALUES (:message, :subject, :recipient, :sender, :date, 0);", message=message, subject=subject, recipient=recipient_id, sender=sender_id, date=datetime.now().date().strftime('%Y/%m/%d'))
         return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
