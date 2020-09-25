@@ -97,10 +97,8 @@ def inbox():
             s = db.execute("SELECT read FROM mails WHERE id=:id", id=read)
             state = s[0]['read']
             if state == 0:
-                print("Consider as read now")
                 db.execute("UPDATE mails SET read=1 WHERE id=:id;", id=read)
             else:
-                print("Consider as unread now")
                 db.execute("UPDATE mails SET read=0 WHERE id=:id;", id=read)
         
         return redirect('/inbox')

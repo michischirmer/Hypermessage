@@ -61,7 +61,7 @@
             </header>
         {% endif %}
 
-        <main class="container p-5" id="main">
+        <main class="container" id="main">
             {% block main %}{% endblock %}
         </main>
 
@@ -72,6 +72,8 @@
         <style>
             body{
                 background-color: rgb(62, 90, 124);
+                position: relative;
+                min-height: 100vh;
             }
 
             #main {
