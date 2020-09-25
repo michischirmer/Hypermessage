@@ -6,7 +6,7 @@
 {% block meta %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <style>
-        .card{
+        .card, .form{
             display:inline-block;
         }
     </style>
@@ -16,7 +16,6 @@
     {% if new_mail %}
         <h3 style="color: white;">New messages since last login:</h3>
         <div class="list-group" id="list">
-            <form action="/inbox" method="post">
             {% for mail in mails %}
                 {% if mail[4] == 0 %}
                     <div class="card bg-info" style="width: 18rem; text-align: center; margin-top: 15px; margin-right: 15px;">
@@ -25,56 +24,68 @@
                             <h6 class="card-subtitle mb-2 text-black">{{ mail[1] }}</h6>
                             <p class="card-text text-white">{{ mail[3] }}</p>
                             <h7 class="card-subtitle mb-2 text-black">{{ mail[2] }}</h6><br>
-                            <button name="source" class="btn">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
-                            </button>
-                            <button name="read" class="btn">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
-                                </svg>
-                            </button>
+                            <form action="/inbox" method="post">
+                                <button name="source" class="btn">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="delete" value={{ mail[5] }}>
+                            </form>
+                            <form action="/inbox" method="post">
+                                <button class="btn">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="read" value={{ mail[5] }}>
+                            </form>
                         </div>
                     </div>
-                    <input type="hidden" name="source" id={{ mail[4] }}>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if old_mail %}
+        <h3 style="color: white; margin-top: 15px;">Old messages:</h3>
+        <div class="list-group" id="list">
+            <form action="/inbox" method="post">
+            {% for mail in mails %}
+                {% if mail[4] == 1 %}
+                    <div class="card" style="width: 18rem; text-align: center; margin-top: 15px; margin-right: 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title">From {{ mail[0] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ mail[1] }}</h6>
+                            <p class="card-text">{{ mail[3] }}</p>
+                            <h7 class="card-subtitle mb-2 text-muted">{{ mail[2] }}</h6><br>
+                            <form action="/inbox" method="post">
+                                <button name="source" class="btn">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="delete" value={{ mail[5] }}>
+                            </form>
+                            <form action="/inbox" method="post">
+                                <button class="btn">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="read" value={{ mail[5] }}>
+                            </form>
+                            
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor %}
             </form>
         </div>
     {% endif %}
-
-    <h3 style="color: white; margin-top: 15px;">Old messages:</h3>
-    <div class="list-group" id="list">
-        <form action="/inbox" method="post">
-        {% for mail in mails %}
-            {% if mail[4] == 1 %}
-                <div class="card" style="width: 18rem; text-align: center; margin-top: 15px; margin-right: 15px;">
-                    <div class="card-body">
-                        <h5 class="card-title">From {{ mail[0] }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ mail[1] }}</h6>
-                        <p class="card-text">{{ mail[3] }}</p>
-                        <h7 class="card-subtitle mb-2 text-muted">{{ mail[2] }}</h6><br>
-                        <button name="source" class="btn">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                            </svg>
-                        </button>
-                        <button name="read" class="btn">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <input type="hidden" name="source" id={{ mail[4] }} value={{ mail[4] }}>
-            {% endif %}
-        {% endfor %}
-        </form>
-    </div>
 
 {% endblock %}

@@ -63,40 +63,46 @@ def settings():
 def inbox():
     if request.method == 'GET':
         emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
-        last = db.execute("SELECT last_login FROM users WHERE id=:id", id=session['user_id'])
-        last_login = last[0]['last_login']
-
-        login = datetime.strptime(last_login, "%Y-%m-%d %H:%M:%S")
-
         ls = []
         for row in emails:
             sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
             username = sender[0]['username']
-            mail = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
             subject = row['subject']
             date = str(row['date'])
             message = row['message']
             mail_id = row['id']
+            read = row['read']
 
-            if mail > login:     
-                ls.append([username, subject, date, message, 0, mail_id])
-            else:
-                ls.append([username, subject, date, message, 1, mail_id])
+            ls.append([username, subject, date, message, read, mail_id])
 
         new_mail = False
+        old_mail = False
         for row in ls:
             if row[4] == 0:
                 new_mail = True
+            if row[4] == 1:
+                old_mail = True
 
-        return render_template("inbox.html", mails=ls, new_mail=new_mail)
+        return render_template("inbox.html", mails=ls, new_mail=new_mail, old_mail=old_mail)
 
     else:
-        source = request.form.get('source')
+
+        delete = request.form.get('delete')
         read = request.form.get('read')
-        if source:
-            print("Source of deleting: " + source)
+
+        if delete:
+            # user wants to delete a mail
+            db.execute("DELETE FROM mails WHERE id=:mail_id", mail_id=delete)
         elif read:
-            print("Source of reading: " + read)
+            s = db.execute("SELECT read FROM mails WHERE id=:id", id=read)
+            state = s[0]['read']
+            if state == 0:
+                print("Consider as read now")
+                db.execute("UPDATE mails SET read=1 WHERE id=:id;", id=read)
+            else:
+                print("Consider as unread now")
+                db.execute("UPDATE mails SET read=0 WHERE id=:id;", id=read)
+        
         return redirect('/inbox')
 	    
 
@@ -166,9 +172,7 @@ def login():
 @app.route("/logout")
 def logout():
     """Log user out"""
-    # keep track when the user last loggin in
-    db.execute("UPDATE [users] SET last_login=:timestamp WHERE id=:id", timestamp=datetime.now(), id=session['user_id'])
-
+    
     # Forget any user_id
     session.clear()
 
