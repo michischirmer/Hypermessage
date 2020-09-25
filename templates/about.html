@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}
+    About
+{% endblock %}
+
+{% block meta %}
+    <style>
+        .card{
+            /*min-width: 80%;
+            max-width: 80%;*/
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="card" style="width: 45rem;">
+        <div class="card-body">
+            <h5 class="card-title">About Hypermail</h5>
+            <p class="card-text">
+                Created by Michael Schirmer as <a href="https://cs50.harvard.edu/x/2020/">CS50</a>'s Final Project
+            </p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Harvard_University_logo.svg" alt="Harvard University Logo" style="margin-bottom: 25px;" width="245rem">
+            <p class="card-text">
+                <h5><u>Contact:</u><br></h5>
+                Michael Schirmer <br>
+                Erding (Bavaria) <br>                
+                Germany <br><br>
+                <a href="https://github.com/michischirmer"><img src="github.svg" alt="GitHub"></a>
+            </p> 
+        </div>
+    </div>
+{% endblock %}

@@ -255,6 +255,10 @@ def errorhandler(e):
         e = InternalServerError()
     return apology(e.name, e.code)
 
+@app.route("/about")
+@login_required
+def about():
+    return render_template('about.html')
 
 # Listen for errors
 for code in default_exceptions:
