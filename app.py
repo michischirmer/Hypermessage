@@ -18,6 +18,7 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -60,19 +61,27 @@ def settings():
 @app.route("/inbox")
 @login_required
 def inbox():
+
     emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
-    old = []
+    last = db.execute("SELECT last_login FROM users WHERE id=:id", id=session['user_id'])
+    last_login = last[0]['last_login']
+
+    login = datetime.strptime(last_login, "%Y-%m-%d %H:%M:%S")
+
     ls = []
     for row in emails:
         sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
         string = "From " + sender[0]['username'] + " - " + row['subject'] + " - " + str(row['date'])
-        if row['read'] == 0:     
-            ls.append([string, 0])
+
+        mail_date = datetime.strptime(row['date'], "%Y-%m-%d %H:%M:%S")
+
+        if mail_date > login:     
+            ls.append([string, 0, row['id']])
         else:
-            ls.append([string, 1])
+            ls.append([string, 1, row['id']])
 
     return render_template("inbox.html", mails=ls)
-
+	    
 
 @app.route("/send", methods=["GET", "POST"])
 @login_required
@@ -140,6 +149,8 @@ def login():
 @app.route("/logout")
 def logout():
     """Log user out"""
+    # keep track when the user last loggin in
+    db.execute("UPDATE [users] SET last_login=:timestamp WHERE id=:id", timestamp=datetime.now(), id=session['user_id'])
 
     # Forget any user_id
     session.clear()
@@ -171,7 +182,6 @@ def register():
         db.execute("INSERT INTO users (username, hash) VALUES (:username, :password);",
                    username=name, password=generate_password_hash(password))
         return redirect("/login")
-
 
 def errorhandler(e):
     """Handle error"""

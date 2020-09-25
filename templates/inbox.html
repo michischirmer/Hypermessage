@@ -3,20 +3,44 @@
     Inbox
 {% endblock %}
 
+{% block meta %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+{% endblock %}
+
 {% block main %}
-    <p>Put some new Mails here</p>
+    <p style="color: white;">New messages since last login:</p>
 
 
-    <div class="list-group">
+    <div class="list-group" id="list">
+        <form action="/inbox" method="post">
         {% for mail in mails %}
             {% if mail[1] == 1 %}
-                <button type="button" class="list-group-item list-group-item-action">{{ mail[0] }}</button>
+                <button id={{mail[2]}} type="button" class="list-group-item list-group-item-action">{{ mail[0] }}</button>
             {% endif %}
             {% if mail[1] == 0 %}
-                <button type="button" class="list-group-item list-group-item-action active">{{ mail[0] }}</button>
+                <button id={{mail[2]}} type="button" class="list-group-item list-group-item-action active">{{ mail[0] }}</button>
             {% endif %}
+
         {% endfor %}
+        </form>
+        
     </div>
 
+    <script>
+        
+
+        function f(){
+            this.classList.remove("active");
+            let visited = document.createElement('input');
+            visited.name = "visited";
+            visited.type = "hidden";
+            visited.value = parseInt(this.id);
+        }
+
+        buttons = document.querySelectorAll('button');
+        for (i = 0; i < buttons.length; i++){
+            buttons[i].onclick = f;
+        }
+    </script>
 
 {% endblock %}
