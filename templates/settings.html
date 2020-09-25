@@ -21,6 +21,12 @@
     {% if delete_all %}
         <div class="alert alert-success">All messages were deleted.</div>
     {% endif %}
+    {% if wrong_pw %}
+        <div class="alert alert-danger">Your password was wrong.</div>
+    {% endif %}
+    {% if changed_pw %}
+        <div class="alert alert-success">Your password was changed.</div>
+    {% endif %}
 
     
     <div class="card-deck" id="list" style="margin: 0 0 0 0;">

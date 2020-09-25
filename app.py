@@ -53,33 +53,60 @@ def index():
 
 changed_name = False
 delete_all = False
+changed_pw = False
+
+states = {
+    'changed_name': False,
+    'delete_all': False,
+    'changed_pw': False,
+    'wrong_pw': False
+}
 
 @app.route("/settings", methods=['GET', 'POST'])
 @login_required
 def settings():
     if request.method == 'GET':
-        global changed_name
-        name = changed_name
-        changed_name = False
+        global states
+        name = states['changed_name']
+        delete = states['delete_all']
+        pwc = states['changed_pw']
+        wpw = states['wrong_pw']
 
-        global delete_all 
-        delete = delete_all
-        delete_all = False
-        return render_template("settings.html", changed_name=changed_name, delete_all=delete_all)
+        # reset the state
+        for key in states:
+            states[key] = False
+
+        return render_template("settings.html", changed_name=name, delete_all=delete, changed_pw=pwc, wrong_pw=wpw)
     else:
+        # reset the state
+        for key in states:
+            states[key] = False
+
         # user wants to change his name
         username = request.form.get('username')
         if username:
-            db.execute("UPDATE users SET username=:username WHERE id=:id", id=session['user_id'], username=username)
-            changed_name = True
+            db.execute("UPDATE [users] SET username=:username WHERE id=:id", id=session['user_id'], username=username)
+            states['changed_name'] = True
         
         # user wants to delete all mails received by him
         delete = request.form.get('check')
         if delete:
-            delete_all = True
+            states['delete_all'] = True
             db.execute("DELETE FROM mails WHERE recipient=:recipient", recipient=session['user_id'])
 
-        return render_template("settings.html", changed_name=changed_name, username=username, delete_all=delete_all)
+        # user wants to change his password
+        pw = request.form.get('pw-confirmation')
+        if pw:
+            result = db.execute("SELECT hash FROM users WHERE id=:id", id=session['user_id'])
+            if check_password_hash(result[0]['hash'], request.form.get('old_password')):
+                # user input the right password
+                states['changed_pw'] = True
+                db.execute("UPDATE [users] SET hash=:hash WHERE id=:id", id=session['user_id'], hash=generate_password_hash(pw))
+            else:
+                # user input the wrong password
+                states['wrong_pw'] = True
+
+        return render_template("settings.html", changed_name=states['changed_name'], username=username, delete_all=states['delete_all'], changed_pw=states['changed_pw'], wrong_pw=states['wrong_pw'])
 
 
 @app.route("/inbox", methods=['GET', 'POST'])
