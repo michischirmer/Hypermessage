@@ -19,7 +19,7 @@
             <form action="/inbox" method="post">
             {% for mail in mails %}
                 {% if mail[4] == 0 %}
-                    <div class="card bg-info" style="width: 18rem; text-align: center;">
+                    <div class="card bg-info" style="width: 18rem; text-align: center; margin-top: 15px; margin-right: 15px;">
                         <div class="card-body">
                             <h5 class="card-title text-white">From {{ mail[0] }}</h5>
                             <h6 class="card-subtitle mb-2 text-black">{{ mail[1] }}</h6>
@@ -38,7 +38,7 @@
         <form action="/inbox" method="post">
         {% for mail in mails %}
             {% if mail[4] == 1 %}
-                <div class="card" style="width: 18rem; text-align: center; margin-bottom: 15px">
+                <div class="card" style="width: 18rem; text-align: center; margin-top: 15px; margin-right: 15px;">
                     <div class="card-body">
                         <h5 class="card-title">From {{ mail[0] }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ mail[1] }}</h6>
