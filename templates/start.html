@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Login | Register
+{% endblock %}
+
+{% block main %}
+    <h2 style="color: white;">Messenger Application</h2>
+    <br>
+    <div class="container" style="display: inline-block; width: 70%;">
+        <div class="row">
+            <!-- Login to an existing account -->
+            <div class="col col-sm">
+                <h5>Already have an account? <br>Login to your account</h5><br>
+                {% if error %}
+                    <div class="alert alert-danger">Wrong username and/or password</div>
+                {% endif %}
+
+                <form action="/start" method="post">
+                    <div class="form-group">
+                        <input id="l-username" autocomplete="off" autofocus class="form-control" name="l-username" placeholder="Username" type="text">
+                    </div>
+                    <div class="form-group">
+                        <input id="l-password" class="form-control" name="l-password" placeholder="Password" type="password">
+                    </div>
+                    <button id="l-button" class="btn btn-primary" type="submit" disabled>Log In</button>
+                </form>
+            </div>
+
+            <!-- Register for an account -->
+            <div class="col col-sm" id="register">
+                <h5>New to this page? <br>Create an account and start chatting!</h5><br>
+                {% if taken %}
+                    <div class="alert alert-danger">Username is already taken. <br> Please choose another one.</div>
+                {% endif %}
+                <form action="/start" method="post">
+                    <input id="r-username" type="text" name="r-username" placeholder="Username" class="form-control" style="margin-bottom:10px;" autocomplete="off"><br>
+                    <input id="r-password" type="password" name="r-password" placeholder="Password" class="form-control" style="margin-bottom:10px;" autocomplete="off"><br>
+                    <input id="r-confirmation" type="password" name="r-confirmation" placeholder="Repeat Password" class="form-control" style="margin-bottom:10px;" autocomplete="off"><br>
+                    <p id="error1" style="color: red; font-size: small;"></p>
+                    <p id="error2" style="color: red; font-size: small;"></p>
+                    <input id="r-button" type="submit" value="Register" class="btn btn-primary" disabled>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #register{border-left:2px solid white;}
+        h5{
+            color: white;
+            margin-bottom: 15px;
+        }
+    </style>
+
+    <script>
+        var username = document.querySelector('#l-username');
+        var password = document.querySelector('#l-password');
+        var button = document.querySelector('#l-button');
+
+        username.onkeyup = f;
+        password.onkeyup = f;
+
+        function f(){
+            if (username.value == "" || password.value == ""){
+                document.querySelector('#l-button').disabled = true;
+            }else{
+                document.querySelector('#l-button').disabled = false;
+            }
+        }
+
+        var r_username = document.querySelector('#r-username');
+        var r_password = document.querySelector('#r-password');
+        var r_confirmation = document.querySelector('#r-confirmation');
+        var r_button = document.querySelector('#r-button');
+
+        r_username.onkeyup = g;
+        r_password.onkeyup = g;
+        r_confirmation.onkeyup = g;
+
+        function g(){
+            if (r_username.value == "" || r_password.value == "" || r_confirmation.value == ""){
+                document.querySelector('#r-button').disabled = true;
+            }else{
+                document.querySelector('#r-button').disabled = false;
+                if (r_password.value != r_confirmation.value){
+                    document.querySelector('#r-button').disabled = true;
+                }
+            }
+        }
+    </script>
+
+{% endblock %}

@@ -6,12 +6,12 @@
 
 {% block main %}
     <form action="/register" method="post">
-        <input id="username" type="text" name="username" placeholder="Username" class="form-control" style="margin-bottom:10px;"><br>
-        <input id="password" type="password" name="password" placeholder="Password" class="form-control" style="margin-bottom:10px;"><br>
-        <input id="confirmation" type="password" name="confirmation" placeholder="Repeat Password" class="form-control" style="margin-bottom:10px;"><br>
+        <input id="r-username" type="text" name="r-username" placeholder="Username" class="form-control" style="margin-bottom:10px;"><br>
+        <input id="r-password" type="password" name="r-password" placeholder="Password" class="form-control" style="margin-bottom:10px;"><br>
+        <input id="r-confirmation" type="password" name="r-confirmation" placeholder="Repeat Password" class="form-control" style="margin-bottom:10px;"><br>
         <p id="error1" style="color: red; font-size: small;"></p>
         <p id="error2" style="color: red; font-size: small;"></p>
-        <input id="button" type="submit" value="Register" class="btn btn-primary">
+        <input id="r-button" type="submit" value="Register" class="btn btn-primary">
     </form>
 
 {% endblock %}

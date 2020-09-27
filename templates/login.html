@@ -11,27 +11,27 @@
 
     <form action="/login" method="post">
         <div class="form-group">
-            <input id="username" autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+            <input id="l-username" autocomplete="off" autofocus class="form-control" name="l-username" placeholder="Username" type="text">
         </div>
         <div class="form-group">
-            <input id="password" class="form-control" name="password" placeholder="Password" type="password">
+            <input id="l-password" class="form-control" name="l-password" placeholder="Password" type="password">
         </div>
-        <button id="button" class="btn btn-primary" type="submit" disabled>Log In</button>
+        <button id="l-button" class="btn btn-primary" type="submit" disabled>Log In</button>
     </form>
 
     <script>
-        var username = document.querySelector('#username');
-        var password = document.querySelector('#password');
-        var button = document.querySelector('#button');
+        var username = document.querySelector('#l-username');
+        var password = document.querySelector('#l-password');
+        var button = document.querySelector('#l-button');
 
         username.onkeyup = f;
         password.onkeyup = f;
 
         function f(){
             if (username.value == "" || password.value == ""){
-                document.querySelector('#button').disabled = true;
+                document.querySelector('#l-button').disabled = true;
             }else{
-                document.querySelector('#button').disabled = false;
+                document.querySelector('#l-button').disabled = false;
             }
         }
     </script>
