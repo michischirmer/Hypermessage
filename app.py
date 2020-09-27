@@ -37,7 +37,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
+db = SQL("sqlite:///messenger.db")
 
 # state of the index page
 state = 0 # 0 for nothing, 1 for recipient not found, 2 for message sent
@@ -49,7 +49,27 @@ def index():
     global state
     s = state
     state = 0
-    return render_template("index.html", state=s)
+
+    emails = db.execute("SELECT * FROM mails WHERE recipient=:recipient ORDER BY date DESC;", recipient=session['user_id'])
+    ls = []
+    for row in emails:
+        sender = db.execute("SELECT username FROM users WHERE id=:id", id=row['sender'])
+        username = sender[0]['username']
+        subject = row['subject']
+        date = str(row['date'])
+        message = row['message']
+        mail_id = row['id']
+        read = row['read']
+
+        ls.append([username, subject, date, message, read, mail_id])
+
+    new_mail = False
+    for row in ls:
+        if row[4] == 0:
+            new_mail = True
+
+
+    return render_template("index.html", state=s, new_mail=new_mail)
 
 changed_name = False
 delete_all = False

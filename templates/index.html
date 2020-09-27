@@ -4,6 +4,21 @@
     Home
 {% endblock %}
 
+{% block meta %}
+    <style>
+        .card, .card-deck{
+            /*min-width: 80%;
+            max-width: 80%;*/
+            display: inline-block;
+        }
+
+        #button-inbox:hover, #button-send:hover{
+            background-color: white;
+            color: green;
+        }
+    </style>
+{% endblock %}
+
 {% block main %}
     {% if state == 1 %}
     <div class="alert alert-danger">Recipient not found.</div>
@@ -12,5 +27,29 @@
     <div class="alert alert-success">Mail sent.</div>
     {% endif %}
 
-    <p>You will see some features and options here</p>
+    {% if new_mail %}
+        <div class="card-deck" id="list" style="margin-right: 0px;">
+            <!-- user sees a reference to his inbox -->
+            <div class="card text-white bg-success" style="width: 25rem; text-align: center; margin-top: 15px; margin-right: 0px;">
+                <div class="card-body">
+                    <h5 class="card-title">New messages</h5>
+                    <p class="card-text">You have unread messages.</p>
+                    <a href="/inbox"><button class="btn btn-outline-light" id="button-inbox">Go to inbox</button></a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not new_mail %}
+        <div class="card-deck" id="list" style="margin-right: 0px;">
+            <!-- user sees a reference to his inbox -->
+            <div class="card bg-light" style="width: 25rem; text-align: center; margin-top: 15px; margin-right: 0px;">
+                <div class="card-body">
+                    <h5 class="card-title">You have no new messages.</h5>
+                    <a href="/inbox"><button class="btn btn-success" id="button-inbox">Go to inbox</button></a>
+                    <a href="/send"><button class="btn btn-success" id="button-send">Send a new message</button></a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
