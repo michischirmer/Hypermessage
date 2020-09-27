@@ -244,7 +244,7 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-
+# TODO: add profile picture
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""

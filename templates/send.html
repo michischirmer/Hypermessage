@@ -7,8 +7,8 @@
     <p style="color: white;">Send a text message to another user.</p>
 
     <form action="/send" method="post" style="margin-bottom: 15px; background-color: rgb(62, 90, 124);">
-        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from form-control-lg" style="margin-bottom: 15px;" autocomplete="off"><br>
-        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px;" autocomplete="off"><br>
+        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from form-control-lg" style="margin-bottom: 15px; border: 0;" autocomplete="off"><br>
+        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px; border: 0;" autocomplete="off"><br>
         <textarea rows="10" name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
         <input type="submit" value="Send" id="send-button" class="btn btn-light" disabled>
     </form>
@@ -50,8 +50,7 @@
             }else{
                 document.querySelector('#send-button').disabled = false;
             }
-        }
-        
+        }  
     </script>
     
 {% endblock %}
