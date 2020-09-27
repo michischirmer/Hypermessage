@@ -171,7 +171,7 @@ def inbox():
         return redirect('/inbox')
 	    
 
-@app.route("/send", methods=["GET", "POST"])
+@app.route("/send/", methods=["GET", "POST"])
 @login_required
 def send():
     if request.method == "GET":

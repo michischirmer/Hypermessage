@@ -7,27 +7,44 @@
     <p style="color: white;">Send a text message to another user.</p>
 
     <form action="/send" method="post" style="margin-bottom: 15px; background-color: rgb(62, 90, 124);">
-        <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="control-from form-control-lg" style="margin-bottom: 15px; border: 0;" autocomplete="off"><br>
-        <input type="text" name="subject" id="subject" placeholder="Subject" class="control-from" style="margin-bottom: 15px; border: 0;" autocomplete="off"><br>
-        <textarea rows="10" name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
-        <input type="submit" value="Send" id="send-button" class="btn btn-light" disabled>
+        <div class="container" id="form" style="display: inline-block; width: 50%;">
+            <div class="row">
+                <div class="col-sm">
+                    <input type="text" name="recipient" id="recipient" placeholder="Recipient" class="form-control" style="margin-bottom: 15px; border: 0; text-align: left;" autocomplete="off"><br>
+                    <input type="text" name="subject" id="subject" placeholder="Subject" class="form-control" style="margin-bottom: 15px; border: 0; text-align: left;" autocomplete="off"><br>
+                </div>
+                <div class="col-sm">
+                    <input type="submit" value="Send" id="send-button" class="btn btn-light text-center" disabled>
+                </div>
+            </div>
+        </div>
+        <textarea rows="13" name="message" id="message" class="form-control" aria-label="With textarea"></textarea><br>
     </form>
 
     <style>
+        #send-button{
+            margin-top: 10%;
+            margin-left: 0%;
+            float: left;
+        }
+
         #message{
             min-width: 50%;
-            height: 60%;
+            height: 70%;
             min-height:60%;
             resize: none;
         }
         #recipient, #subject{
-            min-width: 40%;
-            max-width: 40%;
+            /*min-width: 40%;
+            max-width: 40%;*/
             text-align: center;
         }
         input, #message{
             background-color: white;
             color: black;
+        }
+        .row, .col-sm{
+            padding: 0;
         }
     </style>
 
@@ -51,6 +68,17 @@
                 document.querySelector('#send-button').disabled = false;
             }
         }  
+
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var asw = url.searchParams.get("asw");
+        if (asw != "" && asw != null){
+            recipient.value = asw;
+        }
+        var sj = url.searchParams.get("sj");
+        if (sj != "" && sj != null){
+            subject.value = "AW: " + sj;
+        }
     </script>
     
 {% endblock %}
