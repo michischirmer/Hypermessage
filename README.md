@@ -56,3 +56,4 @@ Code snippets, CSS library, etc.
 * [Bootstrap](https://getbootstrap.com)
 * [Stack Overflow](https://stackoverflow.com)
 * [W3Schools](https://www.w3schools.com)
+* [CS50 Library](https://manual.cs50.io)
