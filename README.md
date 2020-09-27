@@ -21,8 +21,8 @@ In specific:
 
 ## Installing
 
-* Download this repo from [https://github.com/michischirmer/Chat50.git](https://github.com/michischirmer/Chat50.git)
-* Clone this repo by using ``` git clone https://github.com/michischirmer/Chat50.git```
+* Download this repo from [https://github.com/michischirmer/Hypermessage.git](https://github.com/michischirmer/Hypermessage.git)
+* Clone this repo by using ``` git clone https://github.com/michischirmer/Hypermessage.git```
 
 ### Executing program
 
@@ -37,13 +37,14 @@ To make the server available public at ```0.0.0.0:5000```use ```flask run --host
 
 ## Author
 
-Michael Schirmer <br>
-[Facebook](https://www.facebook.com/michael.schirmer.9843/) <br>
-[GitHub](https://github.com/michischirmer) <br>
-[E-Mail](mailto:msschirm20@gmail.com)
+Michael Schirmer
+* [Facebook](https://www.facebook.com/michael.schirmer.9843/)
+* [GitHub](https://github.com/michischirmer)
 
 
 ## Acknowledgments
 
 Code snippets, CSS library, etc.
 * [Bootstrap](https://getbootstrap.com)
+* [Stack Overflow](https://stackoverflow.com)
+* [W3Schools](https://www.w3schools.com)
