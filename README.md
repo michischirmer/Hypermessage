@@ -12,14 +12,14 @@ Feel free to sign up for a free acount on the main Weppage. Just pick an unused 
 
 ## Dependencies
 Hypermessage requires an installed Python distribution, recommended the lastest one (Version >3), but also supports versions Python 2.7 and PyPy.
-All other dependencies are stored in [`requirements.txt`](https://pip.readthedocs.org/en/1.1/requirements.html) at the root of the project and can be installed using ```pip install -r requirements.txt``` 
+All other dependencies are stored in [`requirements.txt`](https://pip.readthedocs.org/en/1.1/requirements.html) at the root of the project and can be installed using ```$ pip install -r requirements.txt``` 
 In specific:
 * cs50
 * Flask
 * Flask-Session
 * requests
 
-By installing Flask using ```pip install Flask``` you will also install the following distributions:
+By installing Flask using ```$ pip install Flask``` you will also install the following distributions:
 * [Werkzeug](https://palletsprojects.com/p/werkzeug/) implements WSGI server.
 * [Jinja](https://palletsprojects.com/p/jinja/) is a template language that renders the pages your application serves.
 * [MarkupSafe](https://palletsprojects.com/p/markupsafe/) comes with Jinja and escapes untrusted input when rendering templates.
@@ -31,16 +31,16 @@ By installing Flask using ```pip install Flask``` you will also install the foll
 ### Installing
 
 * Download this repo from [https://github.com/michischirmer/Hypermessage.git](https://github.com/michischirmer/Hypermessage.git)
-* Clone this repo by using ``` git clone https://github.com/michischirmer/Hypermessage.git```
+* Clone this repo by using ```$ git clone https://github.com/michischirmer/Hypermessage.git```
 
 ### Executing program
 
 
-* Use ```python app.py```
+* Use ```$ python app.py```
 or
-* ```flask run``` in the project directory to start the development flask server.
+* ```$ flask run``` in the project directory to start the development flask server.
 * Open ```127.0.0.1:5000``` or ```localhost:5000``` in your browser to interact with the server. <br>
-To make the server available public at ```0.0.0.0:5000``` use ```flask run --host=0.0.0.0``` instead.
+To make the server available public at ```0.0.0.0:5000``` use ```$ flask run --host=0.0.0.0``` instead.
 
 
 ## Author
