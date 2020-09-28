@@ -36,9 +36,9 @@ By installing Flask using ```$ pip install Flask``` you will also install the fo
 ### Executing program
 
 
-* Use ```$ python app.py```
+* Execute ```$ python app.py```
 or
-* ```$ flask run``` in the project directory to start the development flask server.
+* ```$ flask run``` in the project directory in your terminal to start the development flask server.
 * Open ```127.0.0.1:5000``` or ```localhost:5000``` in your browser to interact with the server. <br>
 To make the server available public at ```0.0.0.0:5000``` use ```$ flask run --host=0.0.0.0``` instead.
 
